@@ -1,0 +1,28 @@
+eureka-service:
+    image: eureka-server
+    ports:
+        - "8761:8761"
+auth-service:
+    image: auth-server
+    ports: 
+        - "8800:8800"
+    links:
+        - eureka-service
+    environment:
+        EUREKA_CLIENT_SERVICEURL_DEFALTZONE: http://eureka-server:8761/eureka
+gateway-service:
+    image: gateway-server
+    ports: 
+        - "8500:8500"
+    links:
+        - eureka-service
+    environment:
+        EUREKA_CLIENT_SERVICEURL_DEFALTZONE: http://eureka-server:8761/eureka
+client-service:
+    image: cleint-server
+    ports: 
+        - "8700:8700"
+    links:
+        - eureka-service
+    environment:
+        EUREKA_CLIENT_SERVICEURL_DEFALTZONE: http://eureka-server:8761/eureka
